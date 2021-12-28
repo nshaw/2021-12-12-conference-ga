@@ -2,7 +2,7 @@ name: Application CI
 on: [push, pull_request]
 jobs:
     pipeline:
-        name: conferenceGA pipeline
+        name: conferenceGA backend job
         runs-on: ubuntu-latest
         if: "!contains(github.event.head_commit.message, '[ci skip]') && !contains(github.event.head_commit.message, '[skip ci]') && !contains(github.event.pull_request.title, '[skip ci]') && !contains(github.event.pull_request.title, '[ci skip]')"
         timeout-minutes: 40
@@ -20,3 +20,4 @@ jobs:
                   ./mvnw -ntp clean verify
             - name: Package application
               run: ./mvnw -ntp package -Pprod -DskipTests
+    frontend_pipeline:
