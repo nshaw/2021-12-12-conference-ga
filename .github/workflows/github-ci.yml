@@ -38,7 +38,7 @@ jobs:
             node-version: '14.15.0'
         - name: Run tests
           run: |
-            cd $GITHUB_WORKSPACE/$PROJECT_NAME/${{ matrix.mfe }}
+            cd ${{ matrix.mfe }}
             npm install
             npm run test
 
