@@ -21,8 +21,16 @@ jobs:
             - name: Package application
               run: ./mvnw -ntp package -Pprod -DskipTests
     micro-frontends:
-      name: micro frontend job
+      name: ${{ matrix.mfe }} micro frontend
       runs-on: ubuntu-latest
+      if: "!contains(github.event.head_commit.message, '[ci skip]') && !contains(github.event.head_commit.message, '[skip ci]') && !contains(github.event.pull_request.title, '[skip ci]') && !contains(github.event.pull_request.title, '[ci skip]')"
+      strategy:
+        fail-fast: false
+        matrix:
+          mfe:
+            - ui/widgets/conference/detailsWidget
+            - ui/widgets/conference/formWidget
+            - ui/widgets/conference/tableWidget
       steps:
         - uses: actions/checkout@v2
         - uses: actions/setup-node@v2.1.4
@@ -30,7 +38,8 @@ jobs:
             node-version: '14.15.0'
         - name: Run tests
           run: |
-            cd ui/widgets/conference/detailsWidget
+            cd $GITHUB_WORKSPACE/$PROJECT_NAME/${{ matrix.mfe }}
             npm install
-            npm test
+            npm run test
+
 
